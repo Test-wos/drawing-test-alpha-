@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diamond Drawing Editor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-mark">◇</div>
+    <div>
+      <h1>Diamond Editor</h1>
+      <p>方眼マップ・配置エディター</p>
+    </div>
+    <span class="header-tag">SVG TOOL</span>
+  </header>
+
+  <main class="app">
+
+    <!-- 操作パネル -->
+    <section class="toolbar panel">
+      <div class="toolbar-title">
+        <span class="section-number">01</span>
+        <h2>操作</h2>
+      </div>
+
+      <div class="button-grid">
+        <button id="create-object" class="btn btn-primary">
+          <span>＋</span> 2×2生成
+        </button>
+
+        <button id="create-ring" class="btn btn-primary">
+          <span>◎</span> 一周生成
+        </button>
+
+        <button id="team-settings" class="btn btn-secondary">
+          <span>◉</span> チーム設定
+        </button>
+
+        <button id="generate-image" class="btn btn-secondary">
+          <span>▧</span> 画像生成
+        </button>
+
+        <button id="export-coordinates" class="btn btn-secondary">
+          <span>≡</span> 座標一覧
+        </button>
+
+        <button id="clear-objects" class="btn btn-danger">
+          <span>×</span> 全消去
+        </button>
+      </div>
+
+      <p class="hint">
+        空白をドラッグ：画面移動 ／
+        2本指：ズーム ／
+        オブジェクトをタップ：編集
+      </p>
+    </section>
+
+    <!-- マップ -->
+    <section class="canvas-panel panel">
+      <div class="canvas-heading">
+        <div>
+          <span class="section-number">02</span>
+          <h2>マップ</h2>
+        </div>
+
+        <span class="live-indicator">
+          <i></i> READY
+        </span>
+      </div>
+
+      <div class="canvas-wrap">
+        <svg id="drawing-area"
+             viewBox="0 0 1000 1000"
+             aria-label="描画マップ">
+        </svg>
+      </div>
+
+      <div class="canvas-footer">
+        <span>DIAGONAL GRID · 45°</span>
+        <span>VIEWBOX 1000 × 1000</span>
+      </div>
+    </section>
+
+    <!-- オブジェクト編集 -->
+    <section id="edit-popup"
+             class="panel popup"
+             style="display:none">
+
+      <div class="popup-heading">
+        <h2>オブジェクト編集</h2>
+        <span class="popup-badge">EDIT</span>
+      </div>
+
+      <label for="edit-name">名前</label>
+      <input id="edit-name"
+             type="text"
+             maxlength="24"
+             placeholder="名前を入力">
+
+      <label for="edit-team">チーム</label>
+      <select id="edit-team">
+        <option value="1">チームA（青）</option>
+        <option value="2">チームB（緑）</option>
+      </select>
+
+      <button id="edit-close"
+              class="btn btn-secondary full-width">
+        編集を閉じる
+      </button>
+    </section>
+
+    <!-- チーム設定 -->
+    <section id="team-popup"
+             class="panel popup"
+             style="display:none">
+
+      <div class="popup-heading">
+        <h2>チーム設定</h2>
+        <span class="popup-badge">TEAM</span>
+      </div>
+
+      <p class="hint">
+        新しく生成するオブジェクトのチームを選択します。
+      </p>
+
+      <div class="team-choice">
+        <button id="select-team-1" class="team-button">
+          <i class="team-dot blue"></i>
+          チームA（青）
+        </button>
+
+        <button id="select-team-2" class="team-button">
+          <i class="team-dot green"></i>
+          チームB（緑）
+        </button>
+      </div>
+
+      <button id="add-team"
+              class="btn btn-secondary full-width"
+              disabled>
+        ＋ チーム追加（準備中）
+      </button>
+
+      <button id="team-close"
+              class="btn btn-ghost full-width">
+        閉じる
+      </button>
+    </section>
+
+    <!-- 画像プレビュー -->
+    <section id="image-section"
+             class="panel output-panel"
+             style="display:none">
+
+      <div class="popup-heading">
+        <h2>画像プレビュー</h2>
+        <span class="popup-badge">PNG</span>
+      </div>
+
+      <img id="image-preview" alt="生成画像">
+
+      <a id="download-image"
+         class="btn btn-primary full-width"
+         download="map.png">
+        PNGを保存
+      </a>
+
+      <button id="close-image"
+              class="btn btn-ghost full-width">
+        閉じる
+      </button>
+    </section>
+
+    <!-- 座標一覧 -->
+    <section id="coordinate-output"
+             class="panel output-panel"
+             style="display:none">
+
+      <div class="popup-heading">
+        <h2>座標一覧</h2>
+        <span class="popup-badge">TEXT</span>
+      </div>
+
+      <textarea id="coordinate-text"
+                rows="14"
+                readonly></textarea>
+
+      <div class="button-grid two-columns">
+        <button id="copy-coordinates"
+                class="btn btn-primary">
+          テキストをコピー
+        </button>
+
+        <button id="close-coordinates"
+                class="btn btn-ghost">
+          閉じる
+        </button>
+      </div>
+
+      <p id="copy-status"
+         class="hint"
+         aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    DIAMOND EDITOR <span>•</span> LOCAL WORKSPACE
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
